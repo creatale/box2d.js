@@ -3,9 +3,9 @@
 # For placing path overrides.. this path is hidden from git
 -include Makefile.local
 
-PYTHON=$(ENV) python
+PYTHON=$(ENV)python2
 
-O = Box2D_v2.2.1/Box2D
+O = Box2D_v2.3.0/Box2D
 OBJECTS = \
 $(O)/Collision/b2BroadPhase.bc \
 $(O)/Collision/b2CollideCircle.bc \
@@ -45,6 +45,7 @@ $(O)/Dynamics/Joints/b2FrictionJoint.bc \
 $(O)/Dynamics/Joints/b2GearJoint.bc \
 $(O)/Dynamics/Joints/b2Joint.bc \
 $(O)/Dynamics/Joints/b2MouseJoint.bc \
+$(O)/Dynamics/Joints/b2MotorJoint.bc \
 $(O)/Dynamics/Joints/b2PrismaticJoint.bc \
 $(O)/Dynamics/Joints/b2PulleyJoint.bc \
 $(O)/Dynamics/Joints/b2RevoluteJoint.bc \
@@ -56,7 +57,7 @@ $(O)/Rope/b2Rope.bc
 all: box2d.js
 
 %.bc: %.cpp
-	$(CXX) -IBox2D_v2.2.1 $< -o $@
+	$(CXX) -IBox2D_v2.3.0 $< -o $@
 
 # Note: might need -xc++ on some compiler versions (no space)
 box2d.clean.h:
@@ -72,7 +73,7 @@ box2d.bc: $(OBJECTS) box2d_bindings.bc
 	$(CXX) -o $@ $(OBJECTS) box2d_bindings.bc
 
 box2d.js: box2d.bc
-	$(CXX) -O2 -s EXPORT_BINDINGS=1 -s RESERVED_FUNCTION_POINTERS=20 --js-transform "python bundle.py" --closure 1 $< -o $@
+	$(CXX) -O2 -s EXPORT_BINDINGS=1 -s RESERVED_FUNCTION_POINTERS=20 --js-transform "python2 bundle.py" --closure 0 $< -o $@
 
 clean:
 	rm -f box2d.js box2d.bc $(OBJECTS) box2d_bindings.cpp box2d_bindings.bc box2d.clean.h
